@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | LEXO Care Projects</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="firebase.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { brandBlue: '#00B4D8', midnight: '#021838', royal: '#0077B6' } } }
+        }
+    </script>
+    <style>
+        body { background-color: #f8fafc; color: #021838; font-family: sans-serif; overflow-x: hidden; }
+        .bauhaus-card { border: 3px solid #021838; box-shadow: 4px 4px 0px 0px #00B4D8; transition: all 0.2s ease; }
+        .bauhaus-btn { border: 3px solid #021838; box-shadow: 3px 3px 0px 0px #00B4D8; transition: all 0.15s ease; }
+        .bauhaus-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0px 0px #00B4D8; }
+        .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .image-container { aspect-ratio: 16/9; position: relative; overflow: hidden; background-color: #021838; }
+        .image-slide { display: none; width: 100%; height: 100%; object-fit: cover; }
+        .image-slide.active { display: block; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <div>
+        <!-- Navigation -->
+        <nav class="bg-white border-b-4 border-midnight py-4 px-4 sm:px-8">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <a href="./index.html" class="text-midnight font-black uppercase tracking-wider text-xs hover:text-brandBlue flex items-center gap-2">
+                    <i class="fas fa-home"></i> Back to Website
+                </a>
+                <div class="flex items-center gap-4">
+                    <span class="bg-midnight text-white px-3 py-1 text-[10px] font-black uppercase tracking-widest">Admin Panel</span>
+                    <button onclick="adminLogout()" class="text-red-600 hover:text-red-800 text-xs font-black uppercase tracking-wider">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Header -->
+        <header class="max-w-7xl mx-auto pt-8 px-4 sm:px-8 mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+            <div>
+                <span class="bg-brandBlue text-white font-black text-xs uppercase px-2.5 py-1 tracking-widest mb-3 inline-block">Management Suite</span>
+                <h1 class="text-3xl sm:text-4xl font-black text-midnight tracking-tight uppercase">Projects & Gallery Dashboard</h1>
+            </div>
+            <button id="toggleFormBtn" class="bauhaus-btn bg-brandBlue hover:bg-royal text-white px-6 py-3 font-black uppercase tracking-wider text-xs flex items-center gap-2">
+                <i class="fas fa-plus"></i> New Project
+            </button>
+        </header>
+
+        <!-- Main Container -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-8 pb-20">
+            <!-- Add Project Form Modal -->
+            <div id="projectFormContainer" class="hidden bg-white p-6 sm:p-10 bauhaus-card mb-12 animate-fade-in">
+                <div class="flex justify-between items-center mb-6 border-b-2 border-slate-100 pb-4">
+                    <h2 class="text-xl font-black text-midnight uppercase tracking-tight">Add New Project (Before & After)</h2>
+                    <button onclick="document.getElementById('projectFormContainer').classList.add('hidden')" class="text-slate-400 hover:text-slate-900 font-bold text-lg">✕</button>
+                </div>
+                <form id="projectForm" class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-black uppercase text-midnight mb-1 tracking-wider">Project Title</label>
+                            <input type="text" id="title" required class="w-full px-4 py-3 border-2 border-midnight outline-none font-medium text-sm" placeholder="e.g. Luxury Villa Deep Clean">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black uppercase text-midnight mb-1 tracking-wider">Category</label>
+                            <select id="category" required class="w-full px-4 py-3 border-2 border-midnight outline-none bg-white font-medium text-sm">
+                                <option value="General Cleaning">General Cleaning</option>
+                                <option value="Deep Cleaning">Deep Cleaning</option>
+                                <option value="Disinfection">Disinfection & Pest</option>
+                                <option value="Hospitality">Hospitality Staffing</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black uppercase text-midnight mb-1 tracking-wider">Description</label>
+                            <textarea id="description" required class="w-full px-4 py-3 border-2 border-midnight outline-none h-28 resize-none font-medium text-sm" placeholder="Describe the service provided..."></textarea>
+                        </div>
+                    </div>
+                    <div class="space-y-4 flex flex-col justify-between">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-black uppercase text-midnight mb-1 tracking-wider">Before Photos </label>
+                                <input type="file" id="beforeFiles" multiple accept="image/*" class="w-full text-xs font-bold text-slate-700 file:mr-4 file:py-2.5 file:px-4 file:border-2 file:border-midnight file:bg-brandBlue file:text-white cursor-pointer">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-black uppercase text-midnight mb-1 tracking-wider">After Photos</label>
+                                <input type="file" id="afterFiles" multiple accept="image/*" class="w-full text-xs font-bold text-slate-700 file:mr-4 file:py-2.5 file:px-4 file:border-2 file:border-midnight file:bg-brandBlue file:text-white cursor-pointer">
+                            </div>
+                        </div>
+                        <div class="pt-4">
+                            <button type="submit" id="submitBtn" class="bauhaus-btn w-full bg-midnight text-white py-4 font-black uppercase tracking-widest text-sm hover:bg-brandBlue transition-colors">
+                                Publish to Live Website
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"></div>
+        </main>
+    </div>
+
+    <!-- Theme-Matching Centered Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden animate-fade-in">
+        <div class="bg-white border-4 border-midnight shadow-[8px_8px_0px_0px_#00B4D8] max-w-md w-full p-6 sm:p-8 text-center relative">
+            <div class="w-16 h-16 bg-brandBlue text-white mx-auto flex items-center justify-center text-2xl font-black mb-4 border-2 border-midnight shadow-[3px_3px_0px_0px_#021838]">
+                <i class="fas fa-check"></i>
+            </div>
+            <h3 class="text-xl sm:text-2xl font-black uppercase text-midnight tracking-tight mb-2">Project Displayed Live!</h3>
+            <p class="text-slate-600 font-medium text-xs sm:text-sm mb-6">Your before & after project images have been successfully uploaded and are now live on the website.</p>
+            <button onclick="closeSuccessModal()" class="bauhaus-btn bg-midnight text-white px-8 py-3 font-black uppercase tracking-wider text-xs sm:text-sm hover:bg-brandBlue w-full">
+                Awesome, Continue
+            </button>
+        </div>
+    </div>
+
+    <script>
+        firebase.auth().onAuthStateChanged((user) => {
+            if (!user && localStorage.getItem("isLoggedIn") !== "true") {
+                window.location.replace('./login.html');
+            }
+        });
+
+        window.adminLogout = async () => {
+            try {
+                await firebase.auth().signOut();
+                localStorage.removeItem("isLoggedIn");
+                window.location.replace('./login.html');
+            } catch (err) {
+                console.error("Logout failed", err);
+            }
+        };
+
+        async function loadProjects() {
+            const grid = document.getElementById('galleryGrid');
+            try {
+                const snapshot = await db.collection('projects').orderBy('createdAt', 'desc').get();
+                const projects = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                grid.innerHTML = '';
+
+                if (projects.length === 0) {
+                    grid.innerHTML = `<div class="col-span-full bg-white p-12 text-center bauhaus-card"><p class="text-midnight font-black uppercase tracking-widest text-xs">No projects uploaded yet.</p></div>`;
+                    return;
+                }
+
+                projects.forEach((data) => {
+                    const allImgs = [...(data.beforeUrl || []), ...(data.afterUrl || [])];
+                    const card = document.createElement('div');
+                    card.className = "bg-white bauhaus-card flex flex-col justify-between overflow-hidden rounded-xl";
+                    
+                    let slidesHtml = '';
+                    if (allImgs.length === 0) {
+                        slidesHtml = `<div class="w-full h-full bg-slate-100 flex items-center justify-center text-slate-400 font-bold text-xs uppercase">No Images</div>`;
+                    } else {
+                        allImgs.forEach((img, idx) => {
+                            slidesHtml += `<img src="${img}" class="image-slide ${idx === 0 ? 'active' : ''}">`;
+                        });
+                    }
+
+                    card.innerHTML = `
+                        <div class="image-container group" id="container-${data.id}">
+                            ${slidesHtml}
+                            ${allImgs.length > 1 ? `
+                                <div class="absolute inset-0 flex items-center justify-between px-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button onclick="changeSlide('${data.id}', -1)" class="bg-midnight text-white w-8 h-8 flex items-center justify-center border-2 border-white hover:bg-brandBlue"><i class="fas fa-chevron-left text-xs"></i></button>
+                                    <button onclick="changeSlide('${data.id}', 1)" class="bg-midnight text-white w-8 h-8 flex items-center justify-center border-2 border-white hover:bg-brandBlue"><i class="fas fa-chevron-right text-xs"></i></button>
+                                </div>
+                            ` : ''}
+                            <button onclick="deleteProject('${data.id}')" class="absolute top-2 right-2 bg-red-600 text-white p-2 border-2 border-white z-10 hover:bg-red-700 transition-colors"><i class="fas fa-trash text-xs"></i></button>
+                        </div>
+                        <div class="p-5 bg-white border-t-2 border-midnight">
+                            <div class="flex justify-between items-start gap-2 mb-2">
+                                <h3 class="font-black text-base uppercase text-midnight tracking-tight">${data.title}</h3>
+                                <span class="text-[9px] bg-brandBlue text-white px-2 py-0.5 font-black uppercase tracking-widest shrink-0">${data.category}</span>
+                            </div>
+                            <p class="text-xs font-medium text-slate-600 line-clamp-2 leading-relaxed">${data.description}</p>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch (err) {
+                console.error("Error loading projects:", err);
+            }
+        }
+
+        window.changeSlide = (projectId, direction) => {
+            const container = document.getElementById(`container-${projectId}`);
+            const slides = container.querySelectorAll('.image-slide');
+            let activeIndex = Array.from(slides).findIndex(s => s.classList.contains('active'));
+            slides[activeIndex].classList.remove('active');
+            activeIndex = (activeIndex + direction + slides.length) % slides.length;
+            slides[activeIndex].classList.add('active');
+        };
+
+        window.deleteProject = async (id) => {
+            if(confirm("Are you sure you want to delete this project?")) {
+                await db.collection('projects').doc(id).delete();
+                loadProjects();
+            }
+        };
+
+        document.getElementById('toggleFormBtn').addEventListener('click', () => {
+            const formContainer = document.getElementById('projectFormContainer');
+            formContainer.classList.toggle('hidden');
+            if(!formContainer.classList.contains('hidden')) {
+                formContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        function compressImage(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let w = img.width, h = img.height;
+                        if (w > 800) { h *= 800 / w; w = 800; }
+                        canvas.width = w; canvas.height = h;
+                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                        resolve(canvas.toDataURL('image/jpeg', 0.7));
+                    };
+                };
+            });
+        }
+
+        document.getElementById('projectForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true; 
+            btn.innerText = "Compressing & Uploading...";
+
+            try {
+                const beforeFiles = document.getElementById('beforeFiles').files;
+                const afterFiles = document.getElementById('afterFiles').files;
+
+                const beforeUrls = [];
+                for (let f of beforeFiles) {
+                    beforeUrls.push(await compressImage(f));
+                }
+
+                const afterUrls = [];
+                for (let f of afterFiles) {
+                    afterUrls.push(await compressImage(f));
+                }
+
+                const newId = Date.now().toString();
+                await db.collection('projects').doc(newId).set({
+                    id: newId,
+                    title: document.getElementById('title').value,
+                    category: document.getElementById('category').value,
+                    description: document.getElementById('description').value,
+                    beforeUrl: beforeUrls,
+                    afterUrl: afterUrls,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                document.getElementById('projectForm').reset();
+                document.getElementById('projectFormContainer').classList.add('hidden');
+                loadProjects();
+                
+                // Show Centered Theme-Matching Success Modal
+                document.getElementById('successModal').classList.remove('hidden');
+            } catch (err) {
+                console.error(err);
+                alert("Upload failed. Please try again.");
+            } finally {
+                btn.disabled = false; 
+                btn.innerText = "Publish to Live Website";
+            }
+        });
+
+        window.closeSuccessModal = () => {
+            document.getElementById('successModal').classList.add('hidden');
+        };
+
+        loadProjects();
+    </script>
+</body>
+</html>

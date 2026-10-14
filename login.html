@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Access | LEXO Care Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="firebase.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { brandBlue: '#00B4D8', midnight: '#021838', royal: '#0077B6' } } }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 bg-slate-100 font-sans">
+    <div class="bg-white w-full max-w-md border-4 border-midnight shadow-[8px_8px_0px_0px_#00B4D8] overflow-hidden p-8">
+        
+        <!-- Logo Section -->
+        <div class="text-center mb-6">
+            <div class="flex justify-center mb-4">
+                <img src="logo.png" alt="LEXO Logo" class="h-20 w-auto object-contain border-2 border-midnight p-1 shadow-[3px_3px_0px_0px_#021838]">
+            </div>
+            <h2 class="text-2xl font-black uppercase tracking-tight text-midnight">LEXO Admin Portal</h2>
+            <p class="text-xs text-slate-500 font-medium mt-1">Enter your secure credentials to manage projects & services.</p>
+        </div>
+
+        <form id="login-form" class="space-y-4">
+            <div>
+                <label class="block text-xs font-black uppercase text-midnight mb-1">Admin Email</label>
+                <input type="email" id="email" required
+                    class="w-full p-4 bg-slate-50 border-2 border-midnight rounded-none outline-none font-medium text-sm">
+            </div>
+            
+            <div>
+                <label class="block text-xs font-black uppercase text-midnight mb-1">Password</label>
+                <div class="relative">
+                    <input type="password" id="password" required
+                        class="w-full p-4 pr-12 bg-slate-50 border-2 border-midnight rounded-none outline-none font-medium text-sm">
+                    <button type="button" id="togglePassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-midnight focus:outline-none">
+                        <i class="fas fa-eye text-lg" id="eyeIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" id="submit-btn"
+                class="w-full bg-midnight text-white font-black py-4 uppercase tracking-widest text-xs border-2 border-midnight hover:bg-brandBlue transition-all shadow-[4px_4px_0px_0px_#00B4D8]">
+                Authenticate & Enter
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            if (type === 'text') {
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        });
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('submit-btn');
+
+            btn.textContent = 'VERIFYING...';
+            btn.disabled = true;
+
+            try {
+                await firebase.auth().signInWithEmailAndPassword(email, password);
+                localStorage.setItem("isLoggedIn", "true");
+                window.location.replace("gallery.html");
+            } catch (err) {
+                console.error(err);
+                alert("Access Denied: Invalid Email or Password.");
+                btn.textContent = 'Authenticate & Enter';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
