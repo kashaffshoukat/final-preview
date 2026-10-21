@@ -1527,7 +1527,6 @@ Building Lasting Trust.
         });
     });
 </script>
-<!-- ================= LEXO CARE CONTACT & QUOTE FORM ================= -->
 <section id="contact" class="py-20 bg-slate-50 font-sans relative overflow-hidden">
     <!-- Floating Water Bubbles / Soft Backdrop -->
     <div class="absolute top-0 right-0 w-96 h-96 bg-brandBlue/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -1549,10 +1548,11 @@ Building Lasting Trust.
     </div>
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <!-- Yahan lg ki jagah md:grid-cols-12 kar diya hai -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
 
             <!-- Left Info & Location Map Column (5 Columns) -->
-            <div class="lg:col-span-5 space-y-6">
+            <div class="md:col-span-5 space-y-6">
                 <h2 class="text-3xl sm:text-4xl font-black text-midnight tracking-tight leading-tight">
                     Book your <span class="text-transparent bg-clip-text bg-gradient-to-r from-brandBlue to-royal">Slot Today!</span> 
                 </h2>
@@ -1563,14 +1563,12 @@ Building Lasting Trust.
                 <!-- Location Map Container Card -->
                 <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 24px; box-shadow: 0 10px 25px -5px rgba(0, 180, 216, 0.08), 0 8px 10px -6px rgba(0, 180, 216, 0.05); text-align: left; font-family: 'Inter', sans-serif;">
                   
-                  <!-- Header with Brand Blue Accent -->
                   <h3 style="margin: 0 0 16px 0; color: #001F4D; font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.025em;">
                     <span style="width: 28px; height: 28px; background-color: rgba(0, 180, 216, 0.1); color: #00B4D8; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px;">📍</span> 
                     Our Location
                   </h3>
 
-                  <!-- Embedded Google Map with Rounded Sleek Frame -->
-                  <div style="width: 100%; height: 280px; border-radius: 14px; overflow: hidden; margin-bottom: 18px; border: 1px solid #e2e8f0;">
+                  <div style="width: 100%; height: 250px; border-radius: 14px; overflow: hidden; margin-bottom: 18px; border: 1px solid #e2e8f0;">
                     <iframe 
                       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4943.441439365463!2d51.540198349572805!3d25.28984535576438!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e45c59293861413%3A0xb925ee4b8460802f!2sLexo%20Care%20for%20Cleaning%20and%20Hospitality%20W.L.L!5e0!3m2!1sen!2s!4v1792597458021!5m2!1sen!2s" 
                       width="100%" 
@@ -1582,14 +1580,12 @@ Building Lasting Trust.
                     </iframe>
                   </div>
 
-                  <!-- Address Details -->
                   <p style="margin: 0 0 20px 0; color: #475569; line-height: 1.6; font-size: 13.5px;">
                     <strong style="color: #001F4D; font-weight: 700; font-size: 14px; display: block; margin-bottom: 2px;">Lexo Care for Cleaning and Hospitality W.L.L</strong>
                     10th Floor, Office 1007, HLEYTON TOWER<br>
                     Al Safliya St, Corniche - Doha, Qatar
                   </p>
 
-                  <!-- Button with BrandBlue Theme -->
                   <a href="https://maps.app.goo.gl/M4sBsT6i1Kp1Ffhu5?g_st=ic" 
                      target="_blank" 
                      rel="noopener noreferrer" 
@@ -1600,9 +1596,9 @@ Building Lasting Trust.
             </div>
 
             <!-- Right Form Area Column (7 Columns) -->
-            <div class="lg:col-span-7 bg-white p-8 sm:p-10 rounded-3xl border border-slate-200 shadow-xl relative">
+            <div class="md:col-span-7 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xl relative">
 
-                <!-- SUCCESS ALERT MODAL (Hidden by default) -->
+                <!-- SUCCESS ALERT MODAL -->
                 <div id="form-success-alert" class="hidden absolute inset-0 bg-white/95 backdrop-blur-md rounded-3xl z-20 flex flex-col items-center justify-center p-8 text-center transition-all duration-300">
                     <div class="w-16 h-10 bg-cyan-50 border border-cyan-100 rounded-full flex items-center justify-center mb-4 text-[#00AEEF] shadow-inner">
                         <i class="fas fa-check text-2xl"></i>
@@ -1619,68 +1615,59 @@ Building Lasting Trust.
                 </div>
 
                 <!-- Contact Form -->
-                <form action="https://formspree.io/f/mzedldnd" method="POST" id="contact-quote-form" class="space-y-6">
+                <form action="https://formspree.io/f/mzedldnd" method="POST" id="contact-quote-form" class="space-y-4">
                     
-                    <!-- Row: Name & Phone -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-midnight mb-2">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-midnight mb-1.5">
                                 Full Name <span class="text-[#00AEEF]">*</span>
                             </label>
                             <input type="text" name="name" required
-                                class="w-full px-4 py-3.5 bg-slate-50 border border-[#00AEEF] rounded-xl font-medium text-sm outline-none focus:border-[#00AEEF] focus:bg-white transition-all">
+                                class="w-full px-4 py-3 bg-slate-50 border border-[#00AEEF] rounded-xl font-medium text-sm outline-none focus:border-[#00AEEF] focus:bg-white transition-all">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-midnight mb-2">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-midnight mb-1.5">
                                 Phone Number (Qatar) <span class="text-[#00AEEF]">*</span>
                             </label>
                             <input type="tel" name="phone" required
-                                class="w-full px-4 py-3.5 bg-slate-50 border border-[#00AEEF] rounded-xl font-medium text-sm outline-none focus:border-[#00AEEF] focus:bg-white transition-all">
+                                class="w-full px-4 py-3 bg-slate-50 border border-[#00AEEF] rounded-xl font-medium text-sm outline-none focus:border-[#00AEEF] focus:bg-white transition-all">
                         </div>
                     </div>
 
-                    <!-- Row: Email & Select Service Type -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-midnight mb-2">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-midnight mb-1.5">
                                 Email Address <span class="text-[#00AEEF]">*</span>
                             </label>
                             <input type="email" name="email" required
-                                class="w-full px-4 py-3.5 bg-slate-50 border border-[#00AEEF] rounded-xl font-medium text-sm outline-none focus:border-[#00AEEF] focus:bg-white transition-all">
+                                class="w-full px-4 py-3 bg-slate-50 border border-[#00AEEF] rounded-xl font-medium text-sm outline-none focus:border-[#00AEEF] focus:bg-white transition-all">
                         </div>
 
-                        <!-- SERVICE TYPE SELECTOR -->
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-midnight mb-2">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-midnight mb-1.5">
                                 Service Type <span class="text-[#00AEEF]">*</span>
                             </label>
                             <div class="relative">
                                 <select name="service_type" required 
-                                    class="w-full px-4 py-3.5 bg-slate-50 border border-[#00AEEF] rounded-xl font-bold text-sm text-midnight outline-none focus:border-[#00AEEF] focus:bg-white transition-all appearance-none cursor-pointer">
-                                    <option value="" disabled selected>Select a Service Required...</option>
+                                    class="w-full px-4 py-3 bg-slate-50 border border-[#00AEEF] rounded-xl font-bold text-sm text-midnight outline-none focus:border-[#00AEEF] focus:bg-white transition-all appearance-none cursor-pointer">
+                                    <option value="" disabled selected>Select a Service...</option>
                                     <optgroup label="GENERAL CLEANING SERVICES">
                                         <option value="Residential Cleaning">Residential & Villa Cleaning</option>
                                         <option value="Commercial Office Cleaning">Commercial & Office Cleaning</option>
                                         <option value="Window & Façade Cleaning">Window & Glass Façade Cleaning</option>
-                                        <option value="Post-Construction Clean">Post-Construction Cleanup</option>
                                     </optgroup>
                                     <optgroup label="DEEP CLEANING SERVICES">
                                         <option value="Full Villa Deep Clean">Full Villa Deep Cleaning</option>
-                                        <option value="Kitchen Deep Clean">Kitchen & Greasetrap Deep Cleaning</option>
-                                        <option value="Sofa & Carpet Shampooing">Sofa, Upholstery & Carpet Shampooing</option>
-                                        <option value="Move-In / Move-Out Clean">Move-In / Move-Out Cleaning</option>
+                                        <option value="Kitchen Deep Clean">Kitchen Deep Cleaning</option>
+                                        <option value="Sofa & Carpet Shampooing">Sofa & Carpet Shampooing</option>
                                     </optgroup>
                                     <optgroup label="DISINFECTION & PEST CONTROL">
                                         <option value="Hospital Grade Disinfection">Hospital-Grade Disinfection</option>
                                         <option value="Residential Pest Control">Residential Pest Control</option>
-                                        <option value="Commercial Pest Control">Commercial Pest Control</option>
-                                        <option value="Anti-Bacterial Sanitization">Anti-Bacterial Fogging Sanitization</option>
                                     </optgroup>
                                     <optgroup label="HOSPITALITY & STAFFING">
                                         <option value="Hotel Staff Supply">Hotel & Resort Staff Supply</option>
                                         <option value="Event Cleaners & Waiters">Event Cleaners & Wait Staff</option>
-                                        <option value="Office Boys & Tea Boys">Office Assistants & Hospitality Staff</option>
-                                        <option value="Corporate Janitorial Staffing">Corporate Janitorial Staffing</option>
                                     </optgroup>
                                 </select>
                                 <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#00AEEF]">
@@ -1690,17 +1677,15 @@ Building Lasting Trust.
                         </div>
                     </div>
 
-                    <!-- Message Area -->
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-midnight mb-2">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-midnight mb-1.5">
                             Project / Space Details
                         </label>
-                        <textarea name="message" rows="4" placeholder="Tell us about the size of your space, preferred dates, or special requirements..." 
-                            class="w-full px-4 py-3.5 bg-slate-50 border border-[#00AEEF] rounded-xl font-medium text-sm outline-none focus:border-[#00AEEF] focus:bg-white transition-all resize-none"></textarea>
+                        <textarea name="message" rows="3" placeholder="Tell us about the size of your space..." 
+                            class="w-full px-4 py-3 bg-slate-50 border border-[#00AEEF] rounded-xl font-medium text-sm outline-none focus:border-[#00AEEF] focus:bg-white transition-all resize-none"></textarea>
                     </div>
 
-                    <!-- Submit Button -->
-                    <button type="submit" id="submit-btn" class="w-full bg-brandBlue hover:bg-cyan-600 text-white font-black py-4 px-8 rounded-xl uppercase tracking-widest text-xs shadow-lg shadow-cyan-500/20 hover:shadow-none transition-all duration-200 cursor-pointer flex items-center justify-center gap-2">
+                    <button type="submit" id="submit-btn" class="w-full bg-brandBlue hover:bg-cyan-600 text-white font-black py-3.5 px-8 rounded-xl uppercase tracking-widest text-xs shadow-lg shadow-cyan-500/20 hover:shadow-none transition-all duration-200 cursor-pointer flex items-center justify-center gap-2">
                         <span id="btn-text">Submit Your Details</span>
                         <i class="fas fa-paper-plane text-xs"></i>
                     </button>
@@ -1710,46 +1695,6 @@ Building Lasting Trust.
         </div>
     </div>
 </section>
-
-<!-- Formspree AJAX Handler Script -->
-<script>
-    const form = document.getElementById('contact-quote-form');
-    const successAlert = document.getElementById('form-success-alert');
-    const submitBtn = document.getElementById('submit-btn');
-    const btnText = document.getElementById('btn-text');
-
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        btnText.innerText = "Sending...";
-        submitBtn.disabled = true;
-
-        const formData = new FormData(form);
-
-        try {
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: { 'Accept': 'application/json' }
-            });
-
-            if (response.ok) {
-                successAlert.classList.remove('hidden');
-                form.reset();
-            } else {
-                alert("Oops! There was a problem submitting your form. Please try again.");
-            }
-        } catch (error) {
-            alert("Oops! Network error. Please try again.");
-        } finally {
-            btnText.innerText = "Submit Your Details";
-            submitBtn.disabled = false;
-        }
-    });
-
-    function resetBookingForm() {
-        successAlert.classList.add('hidden');
-    }
-</script>
         <footer class="bg-brandBlue text-white pt-12 pb-8 relative overflow-hidden font-sans">
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
