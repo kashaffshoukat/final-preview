@@ -1912,5 +1912,23 @@ Building Lasting Trust.
             }
         });
     </script>
+    <script>
+  // Disable right-click context menu
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
+
+  // Disable F12, Ctrl+U, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+  document.addEventListener('keydown', function(e) {
+    if (
+      e.keyCode === 123 || 
+      (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || 
+      (e.ctrlKey && e.keyCode === 85)
+    ) {
+      e.preventDefault();
+      return false;
+    }
+  });
+</script>
 </body>
 </html>
